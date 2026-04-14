@@ -327,7 +327,7 @@ function getTier(coins) {
   return { name:'Bronze', icon:'🥉', class:'tier-badge-bronze', next:500, nextName:'Silver 🥈', progress:(coins/500)*100, max:500 };
 }
 
-/* ── Greeting based on time ── */
+/* ── Greeting ── */
 function getGreeting() {
   var h = new Date().getHours();
   if(h < 12) return 'Good Morning';
@@ -338,146 +338,210 @@ function getGreeting() {
 /* ── Format date ── */
 function formatDate(ts) {
   if(!ts) return '—';
-  var d = ts.toDate ? ts.toDate() : new Date(ts);
-  return d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+  try {
+    var d = ts.toDate ? ts.toDate() : new Date(ts);
+    return d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+  } catch(e) {
+    return '—';
+  }
 }
 
-/* ── Generate referral code ── */
+/* ── Referral code ── */
 function genReferral(uid) {
   return 'FFS-' + uid.substring(0,6).toUpperCase();
 }
 
-/* ── Default avatar ── */
+/* ── Avatar ── */
 function getAvatar(user, data) {
   if(data && data.photoURL) return data.photoURL;
   if(user.photoURL) return user.photoURL;
   return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(data ? data.name : 'User') + '&background=E50914&color=fff&size=128';
 }
 
-/* ── Populate Dashboard ── */
+/* ── Load Dashboard ── */
 async function loadDashboard(user) {
-  var userRef = doc(db, 'users', user.uid);
-  var snap = await getDoc(userRef);
-
-  if(!snap.exists()) {
-    showToast('Profile not found. Please register again.', 'error');
-    await signOut(auth);
-    window.location.href = 'register.html';
-    return;
-  }
-
-  var data = snap.data();
-  var tier = getTier(data.coins || 0);
-  var avatar = getAvatar(user, data);
-
-  // Hide loading, show dashboard
-  document.getElementById('dashLoading').style.display = 'none';
-  document.getElementById('dashMain').style.display = 'block';
-
-  // Header
-  document.getElementById('headerName').textContent = (data.name || 'User').split(' ')[0];
-  document.getElementById('headerAvatar').src = avatar;
-  document.getElementById('headerCoinCount').textContent = (data.coins || 0).toLocaleString();
-
-  // Welcome
-  document.getElementById('greetTime').textContent = getGreeting();
-  document.getElementById('welcomeName').textContent = 'Welcome back, ' + (data.name || 'User').split(' ')[0] + '!';
-  document.getElementById('welcomeCoins').textContent = (data.coins || 0).toLocaleString();
-
-  // Coin ring animation
-  var totalDash = 339.292;
-  var coinPercent = Math.min((data.coins || 0) / (tier.max || 500), 1);
-  setTimeout(function(){
-    document.getElementById('coinRing').style.strokeDashoffset = totalDash - (totalDash * coinPercent);
-  }, 300);
-
-  // Tier badge in welcome
-  var tierBadge = document.getElementById('welcomeTierBadge');
-  tierBadge.textContent = tier.icon + ' ' + tier.name;
-  tierBadge.className = 'tier-badge ' + tier.class;
-
-  // Stats
-  document.getElementById('totalEarned').textContent = (data.totalEarned || 0).toLocaleString();
-  document.getElementById('totalRedeemed').textContent = (data.totalRedeemed || 0).toLocaleString();
-  document.getElementById('totalBookings').textContent = (data.bookings ? data.bookings.length : 0);
-  document.getElementById('totalGiftCards').textContent = (data.giftCards ? data.giftCards.length : 0);
-
-  // Profile
-  document.getElementById('profileAvatar').src = avatar;
-  document.getElementById('profileName').textContent = data.name || 'User';
-  document.getElementById('profileEmail').textContent = data.email || '';
-  document.getElementById('profilePhone').textContent = data.phone || '';
-
-  var pTierBadge = document.getElementById('profileTierBadge');
-  pTierBadge.textContent = tier.icon + ' ' + tier.name;
-  pTierBadge.className = 'tier-badge ' + tier.class;
-
-  document.getElementById('profileJoined').textContent = 'Joined ' + formatDate(data.joined);
-
-  // Profile tier dot color
-  var dotColors = { Bronze:'#cd7f32', Silver:'#c0c0c0', Gold:'#f5a623', Platinum:'#e5e4e2' };
-  document.getElementById('profileTierDot').style.background = dotColors[tier.name] || '#cd7f32';
-
-  // Edit form pre-fill
-  document.getElementById('editName').value = data.name || '';
-  document.getElementById('editPhone').value = data.phone || '';
-
-  // Sidebar tier progress
-  var sTierBadge = document.getElementById('sidebarTierBadge');
-  sTierBadge.textContent = tier.icon + ' ' + tier.name;
-  sTierBadge.className = 'tier-badge ' + tier.class;
-
-  document.getElementById('tierCoinsLabel').textContent = (data.coins || 0) + ' / ' + (tier.next || tier.max) + ' Coins';
-  document.getElementById('tierProgressFill').style.width = tier.progress + '%';
-
-  if(tier.next) {
-    document.getElementById('tierNextLabel').innerHTML = (tier.next - (data.coins || 0)) + ' more coins to <strong class="t-gold">' + tier.nextName + '</strong>';
-  } else {
-    document.getElementById('tierNextLabel').innerHTML = '<strong class="t-gold">🎉 Max tier reached!</strong>';
-  }
-
-  // Highlight current tier in list
-  var tierMap = { Bronze:'tierBronze', Silver:'tierSilver', Gold:'tierGold', Platinum:'tierPlatinum' };
-  var activeEl = document.getElementById(tierMap[tier.name]);
-  if(activeEl) activeEl.classList.add('tier-list-active');
-
-  // Referral code
-  document.getElementById('referralCode').textContent = genReferral(user.uid);
-
-  // Load recent transactions
   try {
+    var userRef = doc(db, 'users', user.uid);
+    var snap = await getDoc(userRef);
+
+    if(!snap.exists()) {
+      showToast('Profile not found. Please register.', 'error');
+      await signOut(auth);
+      window.location.href = 'register.html';
+      return;
+    }
+
+    var data = snap.data();
+    var tier = getTier(data.coins || 0);
+    var avatar = getAvatar(user, data);
+
+    // Hide loading, show dashboard
+    document.getElementById('dashLoading').style.display = 'none';
+    document.getElementById('dashMain').style.display = 'block';
+
+    // Header
+    document.getElementById('headerName').textContent = (data.name || 'User').split(' ')[0];
+    document.getElementById('headerAvatar').src = avatar;
+    document.getElementById('headerCoinCount').textContent = (data.coins || 0).toLocaleString();
+
+    // Welcome
+    document.getElementById('greetTime').textContent = getGreeting();
+    document.getElementById('welcomeName').textContent = 'Welcome back, ' + (data.name || 'User').split(' ')[0] + '!';
+    document.getElementById('welcomeCoins').textContent = (data.coins || 0).toLocaleString();
+
+    // Coin ring animation
+    var totalDash = 339.292;
+    var coinPercent = Math.min((data.coins || 0) / (tier.max || 500), 1);
+    setTimeout(function(){
+      document.getElementById('coinRing').style.strokeDashoffset = totalDash - (totalDash * coinPercent);
+    }, 300);
+
+    // Tier badge in welcome
+    var tierBadge = document.getElementById('welcomeTierBadge');
+    tierBadge.textContent = tier.icon + ' ' + tier.name;
+    tierBadge.className = 'tier-badge ' + tier.class;
+
+    // Stats
+    document.getElementById('totalEarned').textContent = (data.totalEarned || 0).toLocaleString();
+    document.getElementById('totalRedeemed').textContent = (data.totalRedeemed || 0).toLocaleString();
+    document.getElementById('totalBookings').textContent = (data.bookings ? data.bookings.length : 0);
+    document.getElementById('totalGiftCards').textContent = (data.giftCards ? data.giftCards.length : 0);
+
+    // Profile
+    document.getElementById('profileAvatar').src = avatar;
+    document.getElementById('profileName').textContent = data.name || 'User';
+    document.getElementById('profileEmail').textContent = data.email || '';
+    document.getElementById('profilePhone').textContent = data.phone || '';
+
+    var pTierBadge = document.getElementById('profileTierBadge');
+    pTierBadge.textContent = tier.icon + ' ' + tier.name;
+    pTierBadge.className = 'tier-badge ' + tier.class;
+
+    document.getElementById('profileJoined').textContent = 'Joined ' + formatDate(data.joined);
+
+    // Profile tier dot
+    var dotColors = { Bronze:'#cd7f32', Silver:'#c0c0c0', Gold:'#f5a623', Platinum:'#e5e4e2' };
+    document.getElementById('profileTierDot').style.background = dotColors[tier.name] || '#cd7f32';
+
+    // Edit form pre-fill
+    document.getElementById('editName').value = data.name || '';
+    document.getElementById('editPhone').value = data.phone || '';
+
+    // Sidebar tier
+    var sTierBadge = document.getElementById('sidebarTierBadge');
+    sTierBadge.textContent = tier.icon + ' ' + tier.name;
+    sTierBadge.className = 'tier-badge ' + tier.class;
+
+    document.getElementById('tierCoinsLabel').textContent = (data.coins || 0) + ' / ' + (tier.next || tier.max) + ' Coins';
+    document.getElementById('tierProgressFill').style.width = tier.progress + '%';
+
+    if(tier.next) {
+      document.getElementById('tierNextLabel').innerHTML = (tier.next - (data.coins || 0)) + ' more coins to <strong class="t-gold">' + tier.nextName + '</strong>';
+    } else {
+      document.getElementById('tierNextLabel').innerHTML = '<strong class="t-gold">🎉 Max tier reached!</strong>';
+    }
+
+    // Highlight current tier
+    var tierMap = { Bronze:'tierBronze', Silver:'tierSilver', Gold:'tierGold', Platinum:'tierPlatinum' };
+    document.querySelectorAll('.tier-list-item').forEach(function(el){ el.classList.remove('tier-list-active'); });
+    var activeEl = document.getElementById(tierMap[tier.name]);
+    if(activeEl) activeEl.classList.add('tier-list-active');
+
+    // Referral code
+    document.getElementById('referralCode').textContent = genReferral(user.uid);
+
+    // Load recent transactions — with fallback
+    loadRecentActivity(user.uid);
+
+  } catch(err) {
+    console.error('Dashboard load error:', err);
+    document.getElementById('dashLoading').innerHTML =
+      '<div style="text-align:center;padding:40px;">' +
+      '<p style="font-size:1.5rem;margin-bottom:12px;">⚠️</p>' +
+      '<p class="t-body">Something went wrong loading your dashboard.</p>' +
+      '<p class="t-small" style="margin:8px 0 20px;color:var(--text-muted);">' + err.message + '</p>' +
+      '<a href="dashboard.html" class="btn btn-primary btn-sm">Try Again</a>' +
+      '</div>';
+  }
+}
+
+/* ── Load Activity (with fallback for missing index) ── */
+async function loadRecentActivity(uid) {
+  var actList = document.getElementById('activityList');
+
+  try {
+    // Try with orderBy first (requires composite index)
     var txQuery = query(
       collection(db, 'transactions'),
-      where('userId', '==', user.uid),
+      where('userId', '==', uid),
       orderBy('date', 'desc'),
       limit(5)
     );
     var txSnap = await getDocs(txQuery);
-    var actList = document.getElementById('activityList');
 
     if(!txSnap.empty) {
       actList.innerHTML = '';
       txSnap.forEach(function(txDoc){
         var tx = txDoc.data();
-        var isEarn = tx.type === 'earned';
-        var item = document.createElement('div');
-        item.className = 'activity-item';
-        item.innerHTML =
-          '<div class="activity-icon" style="background:' + (isEarn ? 'var(--gold-subtle)' : 'var(--red-subtle)') + ';">' + (isEarn ? '🪙' : '💳') + '</div>' +
-          '<div class="activity-info">' +
-            '<strong>' + (tx.reason || 'Transaction') + '</strong>' +
-            '<span class="t-tiny">' + formatDate(tx.date) + '</span>' +
-          '</div>' +
-          '<div class="activity-amount ' + (isEarn ? 't-gold' : 't-accent') + '">' + (isEarn ? '+' : '-') + tx.amount + '</div>';
-        actList.appendChild(item);
+        actList.appendChild(createActivityItem(tx));
       });
+      return;
     }
-  } catch(err) {
-    console.log('Transactions query error:', err);
+
+  } catch(indexErr) {
+    console.warn('Index not ready, trying fallback query:', indexErr.message);
+
+    // Fallback — query without orderBy (works without index)
+    try {
+      var fallbackQuery = query(
+        collection(db, 'transactions'),
+        where('userId', '==', uid),
+        limit(5)
+      );
+      var fallbackSnap = await getDocs(fallbackQuery);
+
+      if(!fallbackSnap.empty) {
+        actList.innerHTML = '';
+        var items = [];
+        fallbackSnap.forEach(function(d){ items.push(d.data()); });
+
+        // Sort locally
+        items.sort(function(a,b){
+          var da = a.date ? (a.date.toDate ? a.date.toDate() : new Date(a.date)) : new Date(0);
+          var db2 = b.date ? (b.date.toDate ? b.date.toDate() : new Date(b.date)) : new Date(0);
+          return db2 - da;
+        });
+
+        items.forEach(function(tx){
+          actList.appendChild(createActivityItem(tx));
+        });
+        return;
+      }
+    } catch(fallbackErr) {
+      console.warn('Fallback query also failed:', fallbackErr.message);
+    }
   }
+
+  // If we reach here — no transactions found or query failed
+  // Keep the default empty state that's already in the HTML
 }
 
-/* ── Auth check ── */
+/* ── Create Activity Item ── */
+function createActivityItem(tx) {
+  var isEarn = tx.type === 'earned';
+  var item = document.createElement('div');
+  item.className = 'activity-item';
+  item.innerHTML =
+    '<div class="activity-icon" style="background:' + (isEarn ? 'var(--gold-subtle)' : 'var(--red-subtle)') + ';">' + (isEarn ? '🪙' : '💳') + '</div>' +
+    '<div class="activity-info">' +
+      '<strong>' + (tx.reason || 'Transaction') + '</strong>' +
+      '<span class="t-tiny">' + formatDate(tx.date) + '</span>' +
+    '</div>' +
+    '<div class="activity-amount ' + (isEarn ? 't-gold' : 't-accent') + '">' + (isEarn ? '+' : '-') + tx.amount + '</div>';
+  return item;
+}
+
+/* ── Auth Guard ── */
 onAuthStateChanged(auth, function(user){
   if(!user) {
     window.location.href = 'login.html';
@@ -541,7 +605,6 @@ profileEdit.addEventListener('submit', async function(e){
     await updateProfile(user, { displayName: name });
     await updateDoc(doc(db, 'users', user.uid), { name: name, phone: phone });
 
-    // Update UI
     document.getElementById('profileName').textContent = name;
     document.getElementById('profilePhone').textContent = phone;
     document.getElementById('headerName').textContent = name.split(' ')[0];
@@ -557,11 +620,11 @@ profileEdit.addEventListener('submit', async function(e){
   }
 });
 
-/* ── Copy referral code ── */
+/* ── Copy referral ── */
 document.getElementById('copyReferral').addEventListener('click', function(){
   var code = document.getElementById('referralCode').textContent;
   navigator.clipboard.writeText(code).then(function(){
-    showToast('Referral code copied! Share it with friends 🎉', 'success');
+    showToast('Referral code copied! 🎉', 'success');
   }).catch(function(){
     showToast('Copy failed — please copy manually', 'error');
   });
