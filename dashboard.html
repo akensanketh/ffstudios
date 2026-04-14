@@ -3,18 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Your Frame Flicker Studios Dashboard — Manage bookings, FFS Coins, and rewards.">
-  <link rel="icon" type="image/jpeg" href="https://ffstudios.rf.gd/wp-content/uploads/2025/07/WhatsApp-Image-2025-06-20-at-01.53.56_f021d77d.jpg">
   <title>Dashboard | Frame Flicker Studios</title>
+  <link rel="icon" type="image/jpeg" href="https://ffstudios.rf.gd/wp-content/uploads/2025/07/WhatsApp-Image-2025-06-20-at-01.53.56_f021d77d.jpg">
   <link rel="stylesheet" href="css/global.css">
   <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
 
-<!-- ========== LOADING STATE ========== -->
+<!-- ========== LOADING ========== -->
 <div class="dash-loading" id="dashLoading">
   <div class="spinner spinner-lg"></div>
   <p class="t-small" style="margin-top:16px;">Loading your dashboard...</p>
+</div>
+
+<!-- ========== ERROR STATE (hidden by default) ========== -->
+<div id="dashError" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:9998;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;">
+  <div style="font-size:3rem;margin-bottom:16px;">⚠️</div>
+  <h2 class="t-h3" style="margin-bottom:8px;">Something went wrong</h2>
+  <p class="t-small" id="dashErrorMsg" style="margin-bottom:24px;max-width:400px;">Unable to load dashboard. Please check your connection and try again.</p>
+  <div class="flex gap-12">
+    <button class="btn btn-primary btn-sm" onclick="location.reload()">Try Again</button>
+    <a href="index.html" class="btn btn-secondary btn-sm">Go Home</a>
+  </div>
 </div>
 
 <!-- ========== HEADER ========== -->
@@ -24,7 +34,6 @@
       <img src="https://ffstudios.rf.gd/wp-content/uploads/2025/07/WhatsApp-Image-2025-06-20-at-01.53.56_f021d77d.jpg" alt="FFS">
       <div class="logo-text">Frame<span>Flicker</span></div>
     </a>
-
     <nav class="nav" id="nav">
       <a href="dashboard.html" class="active">Dashboard</a>
       <a href="coins.html">FFS Coins</a>
@@ -32,18 +41,14 @@
       <a href="index.html#packages">Packages</a>
       <a href="index.html#gallery">Gallery</a>
     </nav>
-
     <div class="flex items-center gap-12">
-      <!-- Coin display in header -->
       <a href="coins.html" class="coin-display" id="headerCoins">
         <div class="coin-icon">F</div>
         <span class="coin-amount" id="headerCoinCount">0</span>
       </a>
-
-      <!-- User menu -->
       <div class="user-menu-wrap" id="userMenuWrap">
         <button class="user-menu-trigger" id="userMenuBtn">
-          <img src="" alt="" class="avatar avatar-sm avatar-red" id="headerAvatar">
+          <img src="https://ui-avatars.com/api/?name=U&background=E50914&color=fff&size=64" alt="" class="avatar avatar-sm avatar-red" id="headerAvatar">
           <span class="user-menu-name" id="headerName">User</span>
           <span class="user-menu-arrow">▾</span>
         </button>
@@ -55,7 +60,6 @@
           <button class="dropdown-item dropdown-logout" id="logoutBtn">🚪 Log Out</button>
         </div>
       </div>
-
       <button class="hamburger" id="hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
@@ -115,76 +119,61 @@
     </div>
   </section>
 
-  <!-- Stats Cards -->
+  <!-- Stats -->
   <section class="dash-stats">
     <div class="container">
       <div class="grid grid-4 gap-20">
         <div class="card dash-stat-card page-enter">
           <div class="dash-stat-icon" style="background:var(--gold-subtle);">🪙</div>
-          <div>
-            <div class="t-tiny">Total Earned</div>
-            <div class="stat-value" id="totalEarned">0</div>
-          </div>
+          <div><div class="t-tiny">Total Earned</div><div class="stat-value" id="totalEarned">0</div></div>
         </div>
         <div class="card dash-stat-card page-enter" style="animation-delay:.1s;">
           <div class="dash-stat-icon" style="background:var(--red-subtle);">💳</div>
-          <div>
-            <div class="t-tiny">Total Redeemed</div>
-            <div class="stat-value" id="totalRedeemed">0</div>
-          </div>
+          <div><div class="t-tiny">Total Redeemed</div><div class="stat-value" id="totalRedeemed">0</div></div>
         </div>
         <div class="card dash-stat-card page-enter" style="animation-delay:.2s;">
           <div class="dash-stat-icon" style="background:var(--green-subtle);">📷</div>
-          <div>
-            <div class="t-tiny">Bookings</div>
-            <div class="stat-value" id="totalBookings">0</div>
-          </div>
+          <div><div class="t-tiny">Bookings</div><div class="stat-value" id="totalBookings">0</div></div>
         </div>
         <div class="card dash-stat-card page-enter" style="animation-delay:.3s;">
           <div class="dash-stat-icon" style="background:var(--blue-subtle);">🎁</div>
-          <div>
-            <div class="t-tiny">Gift Cards</div>
-            <div class="stat-value" id="totalGiftCards">0</div>
-          </div>
+          <div><div class="t-tiny">Gift Cards</div><div class="stat-value" id="totalGiftCards">0</div></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Two Column Layout -->
+  <!-- Content -->
   <section class="dash-content">
     <div class="container">
       <div class="dash-grid">
 
-        <!-- Left Column -->
+        <!-- Left -->
         <div class="dash-col-main">
 
-          <!-- Profile Card -->
+          <!-- Profile -->
           <div class="card card-glow dash-profile-card">
             <div class="dash-card-header">
               <h3 class="t-h4">Profile</h3>
               <button class="btn btn-ghost btn-sm" id="editProfileBtn">✏️ Edit</button>
             </div>
-
             <div class="profile-info" id="profileView">
               <div class="profile-top">
                 <div class="profile-avatar-wrap">
-                  <img src="" alt="" class="avatar avatar-xl avatar-red" id="profileAvatar">
-                  <div class="profile-tier-dot" id="profileTierDot"></div>
+                  <img src="https://ui-avatars.com/api/?name=U&background=E50914&color=fff&size=128" alt="" class="avatar avatar-xl avatar-red" id="profileAvatar">
+                  <div class="profile-tier-dot" id="profileTierDot" style="background:#cd7f32;"></div>
                 </div>
                 <div class="profile-details">
                   <h3 class="t-h3" id="profileName">Loading...</h3>
                   <p class="t-small" id="profileEmail">loading@email.com</p>
                   <p class="t-small" id="profilePhone"></p>
                   <div class="flex gap-8 flex-wrap" style="margin-top:10px;">
-                    <span class="tier-badge" id="profileTierBadge">🥉 Bronze</span>
+                    <span class="tier-badge tier-badge-bronze" id="profileTierBadge">🥉 Bronze</span>
                     <span class="badge badge-outline" id="profileJoined">Joined —</span>
                   </div>
                 </div>
               </div>
             </div>
-
-            <!-- Edit Form (hidden by default) -->
             <form class="profile-edit" id="profileEdit" style="display:none;">
               <div class="input-group">
                 <label class="input-label" for="editName">Full Name</label>
@@ -201,14 +190,14 @@
             </form>
           </div>
 
-          <!-- Recent Activity -->
+          <!-- Activity -->
           <div class="card">
             <div class="dash-card-header">
               <h3 class="t-h4">Recent Activity</h3>
               <a href="coins.html" class="btn btn-ghost btn-sm">View All →</a>
             </div>
             <div class="activity-list" id="activityList">
-              <div class="activity-empty">
+              <div class="activity-empty" id="activityEmpty">
                 <span style="font-size:2rem;">📋</span>
                 <p class="t-small">No activity yet. Book a session to start earning coins!</p>
                 <a href="index.html#packages" class="btn btn-primary btn-sm" style="margin-top:12px;">Browse Packages</a>
@@ -218,23 +207,21 @@
 
         </div>
 
-        <!-- Right Column / Sidebar -->
+        <!-- Right -->
         <div class="dash-col-side">
 
           <!-- Tier Progress -->
           <div class="card card-gold">
             <h3 class="t-h4" style="margin-bottom:20px;">🏆 Tier Progress</h3>
-            <div class="tier-progress-wrap" id="tierProgressWrap">
-              <div class="tier-current">
-                <span class="tier-badge" id="sidebarTierBadge">🥉 Bronze</span>
-                <span class="t-tiny" id="tierCoinsLabel">0 / 500 Coins</span>
-              </div>
-              <div class="progress-track progress-gold" style="margin:16px 0;">
-                <div class="progress-fill" id="tierProgressFill" style="width:0%;"></div>
-              </div>
-              <div class="tier-next">
-                <span class="t-small" id="tierNextLabel">250 more coins to <strong class="t-gold">Silver 🥈</strong></span>
-              </div>
+            <div class="tier-current">
+              <span class="tier-badge tier-badge-bronze" id="sidebarTierBadge">🥉 Bronze</span>
+              <span class="t-tiny" id="tierCoinsLabel">0 / 500 Coins</span>
+            </div>
+            <div class="progress-track progress-gold" style="margin:16px 0;">
+              <div class="progress-fill" id="tierProgressFill" style="width:0%;"></div>
+            </div>
+            <div class="tier-next">
+              <span class="t-small" id="tierNextLabel">500 more coins to <strong class="t-gold">Silver 🥈</strong></span>
             </div>
             <div class="tier-list">
               <div class="tier-list-item" id="tierBronze"><span class="tier-dot" style="background:#cd7f32;"></span> Bronze <span class="t-muted">0–499</span></div>
@@ -248,29 +235,17 @@
           <div class="card">
             <h3 class="t-h4" style="margin-bottom:20px;">⚡ Quick Actions</h3>
             <div class="quick-actions">
-              <a href="index.html#packages" class="quick-action">
-                <span class="quick-action-icon">📷</span>
-                <span>Book a Session</span>
-              </a>
-              <a href="coins.html" class="quick-action">
-                <span class="quick-action-icon">🪙</span>
-                <span>Redeem Coins</span>
-              </a>
-              <a href="giftcard.html" class="quick-action">
-                <span class="quick-action-icon">🎁</span>
-                <span>Buy Gift Card</span>
-              </a>
-              <a href="index.html#contact" class="quick-action">
-                <span class="quick-action-icon">💬</span>
-                <span>Contact Us</span>
-              </a>
+              <a href="index.html#packages" class="quick-action"><span class="quick-action-icon">📷</span><span>Book a Session</span></a>
+              <a href="coins.html" class="quick-action"><span class="quick-action-icon">🪙</span><span>Redeem Coins</span></a>
+              <a href="giftcard.html" class="quick-action"><span class="quick-action-icon">🎁</span><span>Buy Gift Card</span></a>
+              <a href="index.html#contact" class="quick-action"><span class="quick-action-icon">💬</span><span>Contact Us</span></a>
             </div>
           </div>
 
-          <!-- Referral Card -->
+          <!-- Referral -->
           <div class="card card-glow">
             <h3 class="t-h4" style="margin-bottom:12px;">🔗 Refer a Friend</h3>
-            <p class="t-small" style="margin-bottom:16px;">Share your referral code and earn <strong class="t-gold">200 FFS Coins</strong> for every friend who signs up and books.</p>
+            <p class="t-small" style="margin-bottom:16px;">Share your referral code and earn <strong class="t-gold">200 FFS Coins</strong> for every friend who books.</p>
             <div class="referral-code-wrap">
               <div class="referral-code" id="referralCode">FFS-XXXXXX</div>
               <button class="btn btn-primary btn-sm" id="copyReferral">Copy</button>
@@ -294,21 +269,59 @@
   </div>
 </footer>
 
-<!-- ========== TOAST CONTAINER ========== -->
+<!-- ========== TOAST ========== -->
 <div class="toast-container" id="toasts"></div>
 
-</body>
-
-<!-- ========== DASHBOARD CSS ========== -->
-<link rel="stylesheet" href="css/dashboard.css">
-
-<!-- ========== SCRIPTS ========== -->
+<!-- ========== SCRIPT ========== -->
 <script type="module">
-import { auth, db } from './js/firebase.js';
-import { onAuthStateChanged, signOut, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-import { doc, getDoc, updateDoc, collection, query, where, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-/* ── Toast ── */
+// ── STEP 1: Import Firebase with error catching ──
+var auth, db, onAuthStateChanged, signOut, updateProfile,
+    doc2, getDoc, updateDoc, collection, query, where, orderBy, limit, getDocs;
+
+try {
+  var fbApp = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
+  var fbAuth = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
+  var fbFS = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+
+  var firebaseConfig = {
+    apiKey: "AIzaSyDPqf-empcIBHg93qEQdImzJ7exUOn1RJs",
+    authDomain: "ffstudios-9083a.firebaseapp.com",
+    projectId: "ffstudios-9083a",
+    storageBucket: "ffstudios-9083a.firebasestorage.app",
+    messagingSenderId: "891780995261",
+    appId: "1:891780995261:web:b842d88a799dd8b0833fd4",
+    measurementId: "G-TXYZYQ17K6"
+  };
+
+  var app = fbApp.initializeApp(firebaseConfig);
+  auth = fbAuth.getAuth(app);
+  db = fbFS.getFirestore(app);
+
+  onAuthStateChanged = fbAuth.onAuthStateChanged;
+  signOut = fbAuth.signOut;
+  updateProfile = fbAuth.updateProfile;
+
+  doc2 = fbFS.doc;
+  getDoc = fbFS.getDoc;
+  updateDoc = fbFS.updateDoc;
+  collection = fbFS.collection;
+  query = fbFS.query;
+  where = fbFS.where;
+  orderBy = fbFS.orderBy;
+  limit = fbFS.limit;
+  getDocs = fbFS.getDocs;
+
+} catch(initErr) {
+  console.error('Firebase init failed:', initErr);
+  document.getElementById('dashLoading').style.display = 'none';
+  var errDiv = document.getElementById('dashError');
+  errDiv.style.display = 'flex';
+  document.getElementById('dashErrorMsg').textContent = 'Firebase failed to load: ' + initErr.message;
+  throw initErr;
+}
+
+// ── STEP 2: Helpers ──
 function showToast(msg, type) {
   var c = document.getElementById('toasts');
   var t = document.createElement('div');
@@ -319,15 +332,13 @@ function showToast(msg, type) {
   setTimeout(function(){ t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 400); }, 3500);
 }
 
-/* ── Tier Logic ── */
 function getTier(coins) {
-  if(coins >= 5000) return { name:'Platinum', icon:'💎', class:'tier-badge-platinum', next:null, nextName:null, progress:100, max:5000 };
-  if(coins >= 1500) return { name:'Gold', icon:'🥇', class:'tier-badge-gold', next:5000, nextName:'Platinum 💎', progress:((coins-1500)/(5000-1500))*100, max:5000 };
-  if(coins >= 500)  return { name:'Silver', icon:'🥈', class:'tier-badge-silver', next:1500, nextName:'Gold 🥇', progress:((coins-500)/(1500-500))*100, max:1500 };
-  return { name:'Bronze', icon:'🥉', class:'tier-badge-bronze', next:500, nextName:'Silver 🥈', progress:(coins/500)*100, max:500 };
+  if(coins >= 5000) return { name:'Platinum', icon:'💎', cls:'tier-badge-platinum', next:null, nextName:null, progress:100, max:5000 };
+  if(coins >= 1500) return { name:'Gold', icon:'🥇', cls:'tier-badge-gold', next:5000, nextName:'Platinum 💎', progress:((coins-1500)/(5000-1500))*100, max:5000 };
+  if(coins >= 500)  return { name:'Silver', icon:'🥈', cls:'tier-badge-silver', next:1500, nextName:'Gold 🥇', progress:((coins-500)/(1500-500))*100, max:1500 };
+  return { name:'Bronze', icon:'🥉', cls:'tier-badge-bronze', next:500, nextName:'Silver 🥈', progress:(coins/500)*100, max:500 };
 }
 
-/* ── Greeting ── */
 function getGreeting() {
   var h = new Date().getHours();
   if(h < 12) return 'Good Morning';
@@ -335,33 +346,36 @@ function getGreeting() {
   return 'Good Evening';
 }
 
-/* ── Format date ── */
 function formatDate(ts) {
   if(!ts) return '—';
-  try {
-    var d = ts.toDate ? ts.toDate() : new Date(ts);
-    return d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
-  } catch(e) {
-    return '—';
-  }
+  try { var d = ts.toDate ? ts.toDate() : new Date(ts); return d.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'}); }
+  catch(e) { return '—'; }
 }
 
-/* ── Referral code ── */
-function genReferral(uid) {
-  return 'FFS-' + uid.substring(0,6).toUpperCase();
-}
+function genReferral(uid) { return 'FFS-' + uid.substring(0,6).toUpperCase(); }
 
-/* ── Avatar ── */
 function getAvatar(user, data) {
   if(data && data.photoURL) return data.photoURL;
-  if(user.photoURL) return user.photoURL;
-  return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(data ? data.name : 'User') + '&background=E50914&color=fff&size=128';
+  if(user && user.photoURL) return user.photoURL;
+  var name = (data && data.name) ? data.name : 'User';
+  return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=E50914&color=fff&size=128';
 }
 
-/* ── Load Dashboard ── */
+function createActivityItem(tx) {
+  var isEarn = tx.type === 'earned';
+  var item = document.createElement('div');
+  item.className = 'activity-item';
+  item.innerHTML =
+    '<div class="activity-icon" style="background:'+(isEarn?'var(--gold-subtle)':'var(--red-subtle)')+';">'+(isEarn?'🪙':'💳')+'</div>'+
+    '<div class="activity-info"><strong>'+(tx.reason||'Transaction')+'</strong><span class="t-tiny">'+formatDate(tx.date)+'</span></div>'+
+    '<div class="activity-amount '+(isEarn?'t-gold':'t-accent')+'">'+(isEarn?'+':'-')+tx.amount+'</div>';
+  return item;
+}
+
+// ── STEP 3: Load Dashboard ──
 async function loadDashboard(user) {
   try {
-    var userRef = doc(db, 'users', user.uid);
+    var userRef = doc2(db, 'users', user.uid);
     var snap = await getDoc(userRef);
 
     if(!snap.exists()) {
@@ -375,7 +389,7 @@ async function loadDashboard(user) {
     var tier = getTier(data.coins || 0);
     var avatar = getAvatar(user, data);
 
-    // Hide loading, show dashboard
+    // Show dashboard
     document.getElementById('dashLoading').style.display = 'none';
     document.getElementById('dashMain').style.display = 'block';
 
@@ -389,17 +403,15 @@ async function loadDashboard(user) {
     document.getElementById('welcomeName').textContent = 'Welcome back, ' + (data.name || 'User').split(' ')[0] + '!';
     document.getElementById('welcomeCoins').textContent = (data.coins || 0).toLocaleString();
 
-    // Coin ring animation
+    // Ring
     var totalDash = 339.292;
-    var coinPercent = Math.min((data.coins || 0) / (tier.max || 500), 1);
-    setTimeout(function(){
-      document.getElementById('coinRing').style.strokeDashoffset = totalDash - (totalDash * coinPercent);
-    }, 300);
+    var pct = Math.min((data.coins || 0) / (tier.max || 500), 1);
+    setTimeout(function(){ document.getElementById('coinRing').style.strokeDashoffset = totalDash - (totalDash * pct); }, 300);
 
-    // Tier badge in welcome
-    var tierBadge = document.getElementById('welcomeTierBadge');
-    tierBadge.textContent = tier.icon + ' ' + tier.name;
-    tierBadge.className = 'tier-badge ' + tier.class;
+    // Welcome tier
+    var wb = document.getElementById('welcomeTierBadge');
+    wb.textContent = tier.icon + ' ' + tier.name;
+    wb.className = 'tier-badge ' + tier.cls;
 
     // Stats
     document.getElementById('totalEarned').textContent = (data.totalEarned || 0).toLocaleString();
@@ -413,136 +425,93 @@ async function loadDashboard(user) {
     document.getElementById('profileEmail').textContent = data.email || '';
     document.getElementById('profilePhone').textContent = data.phone || '';
 
-    var pTierBadge = document.getElementById('profileTierBadge');
-    pTierBadge.textContent = tier.icon + ' ' + tier.name;
-    pTierBadge.className = 'tier-badge ' + tier.class;
-
+    var pb = document.getElementById('profileTierBadge');
+    pb.textContent = tier.icon + ' ' + tier.name;
+    pb.className = 'tier-badge ' + tier.cls;
     document.getElementById('profileJoined').textContent = 'Joined ' + formatDate(data.joined);
 
-    // Profile tier dot
     var dotColors = { Bronze:'#cd7f32', Silver:'#c0c0c0', Gold:'#f5a623', Platinum:'#e5e4e2' };
     document.getElementById('profileTierDot').style.background = dotColors[tier.name] || '#cd7f32';
 
-    // Edit form pre-fill
     document.getElementById('editName').value = data.name || '';
     document.getElementById('editPhone').value = data.phone || '';
 
     // Sidebar tier
-    var sTierBadge = document.getElementById('sidebarTierBadge');
-    sTierBadge.textContent = tier.icon + ' ' + tier.name;
-    sTierBadge.className = 'tier-badge ' + tier.class;
-
+    var sb = document.getElementById('sidebarTierBadge');
+    sb.textContent = tier.icon + ' ' + tier.name;
+    sb.className = 'tier-badge ' + tier.cls;
     document.getElementById('tierCoinsLabel').textContent = (data.coins || 0) + ' / ' + (tier.next || tier.max) + ' Coins';
     document.getElementById('tierProgressFill').style.width = tier.progress + '%';
 
     if(tier.next) {
-      document.getElementById('tierNextLabel').innerHTML = (tier.next - (data.coins || 0)) + ' more coins to <strong class="t-gold">' + tier.nextName + '</strong>';
+      document.getElementById('tierNextLabel').innerHTML = (tier.next - (data.coins||0)) + ' more coins to <strong class="t-gold">' + tier.nextName + '</strong>';
     } else {
       document.getElementById('tierNextLabel').innerHTML = '<strong class="t-gold">🎉 Max tier reached!</strong>';
     }
 
-    // Highlight current tier
     var tierMap = { Bronze:'tierBronze', Silver:'tierSilver', Gold:'tierGold', Platinum:'tierPlatinum' };
     document.querySelectorAll('.tier-list-item').forEach(function(el){ el.classList.remove('tier-list-active'); });
-    var activeEl = document.getElementById(tierMap[tier.name]);
-    if(activeEl) activeEl.classList.add('tier-list-active');
+    var ae = document.getElementById(tierMap[tier.name]);
+    if(ae) ae.classList.add('tier-list-active');
 
-    // Referral code
     document.getElementById('referralCode').textContent = genReferral(user.uid);
 
-    // Load recent transactions — with fallback
-    loadRecentActivity(user.uid);
+    // Activity
+    loadActivity(user.uid);
 
   } catch(err) {
-    console.error('Dashboard load error:', err);
-    document.getElementById('dashLoading').innerHTML =
-      '<div style="text-align:center;padding:40px;">' +
-      '<p style="font-size:1.5rem;margin-bottom:12px;">⚠️</p>' +
-      '<p class="t-body">Something went wrong loading your dashboard.</p>' +
-      '<p class="t-small" style="margin:8px 0 20px;color:var(--text-muted);">' + err.message + '</p>' +
-      '<a href="dashboard.html" class="btn btn-primary btn-sm">Try Again</a>' +
-      '</div>';
+    console.error('Dashboard error:', err);
+    document.getElementById('dashLoading').style.display = 'none';
+    var errDiv = document.getElementById('dashError');
+    errDiv.style.display = 'flex';
+    document.getElementById('dashErrorMsg').textContent = err.message;
   }
 }
 
-/* ── Load Activity (with fallback for missing index) ── */
-async function loadRecentActivity(uid) {
-  var actList = document.getElementById('activityList');
+// ── STEP 4: Load Activity ──
+async function loadActivity(uid) {
+  var list = document.getElementById('activityList');
+  var empty = document.getElementById('activityEmpty');
 
   try {
-    // Try with orderBy first (requires composite index)
-    var txQuery = query(
-      collection(db, 'transactions'),
-      where('userId', '==', uid),
-      orderBy('date', 'desc'),
-      limit(5)
-    );
-    var txSnap = await getDocs(txQuery);
+    // Try ordered query first
+    var q = query(collection(db, 'transactions'), where('userId', '==', uid), orderBy('date', 'desc'), limit(5));
+    var snap = await getDocs(q);
 
-    if(!txSnap.empty) {
-      actList.innerHTML = '';
-      txSnap.forEach(function(txDoc){
-        var tx = txDoc.data();
-        actList.appendChild(createActivityItem(tx));
-      });
+    if(!snap.empty) {
+      list.innerHTML = '';
+      snap.forEach(function(d){ list.appendChild(createActivityItem(d.data())); });
       return;
     }
+  } catch(e1) {
+    console.warn('Ordered query failed (index needed):', e1.message);
 
-  } catch(indexErr) {
-    console.warn('Index not ready, trying fallback query:', indexErr.message);
-
-    // Fallback — query without orderBy (works without index)
+    // Fallback — no orderBy
     try {
-      var fallbackQuery = query(
-        collection(db, 'transactions'),
-        where('userId', '==', uid),
-        limit(5)
-      );
-      var fallbackSnap = await getDocs(fallbackQuery);
+      var q2 = query(collection(db, 'transactions'), where('userId', '==', uid), limit(5));
+      var snap2 = await getDocs(q2);
 
-      if(!fallbackSnap.empty) {
-        actList.innerHTML = '';
+      if(!snap2.empty) {
+        list.innerHTML = '';
         var items = [];
-        fallbackSnap.forEach(function(d){ items.push(d.data()); });
-
-        // Sort locally
+        snap2.forEach(function(d){ items.push(d.data()); });
         items.sort(function(a,b){
           var da = a.date ? (a.date.toDate ? a.date.toDate() : new Date(a.date)) : new Date(0);
-          var db2 = b.date ? (b.date.toDate ? b.date.toDate() : new Date(b.date)) : new Date(0);
-          return db2 - da;
+          var db3 = b.date ? (b.date.toDate ? b.date.toDate() : new Date(b.date)) : new Date(0);
+          return db3 - da;
         });
-
-        items.forEach(function(tx){
-          actList.appendChild(createActivityItem(tx));
-        });
+        items.forEach(function(tx){ list.appendChild(createActivityItem(tx)); });
         return;
       }
-    } catch(fallbackErr) {
-      console.warn('Fallback query also failed:', fallbackErr.message);
+    } catch(e2) {
+      console.warn('Fallback query failed:', e2.message);
     }
   }
-
-  // If we reach here — no transactions found or query failed
-  // Keep the default empty state that's already in the HTML
+  // Keep empty state
 }
 
-/* ── Create Activity Item ── */
-function createActivityItem(tx) {
-  var isEarn = tx.type === 'earned';
-  var item = document.createElement('div');
-  item.className = 'activity-item';
-  item.innerHTML =
-    '<div class="activity-icon" style="background:' + (isEarn ? 'var(--gold-subtle)' : 'var(--red-subtle)') + ';">' + (isEarn ? '🪙' : '💳') + '</div>' +
-    '<div class="activity-info">' +
-      '<strong>' + (tx.reason || 'Transaction') + '</strong>' +
-      '<span class="t-tiny">' + formatDate(tx.date) + '</span>' +
-    '</div>' +
-    '<div class="activity-amount ' + (isEarn ? 't-gold' : 't-accent') + '">' + (isEarn ? '+' : '-') + tx.amount + '</div>';
-  return item;
-}
-
-/* ── Auth Guard ── */
-onAuthStateChanged(auth, function(user){
+// ── STEP 5: Auth Guard ──
+onAuthStateChanged(auth, function(user) {
   if(!user) {
     window.location.href = 'login.html';
     return;
@@ -550,29 +519,21 @@ onAuthStateChanged(auth, function(user){
   loadDashboard(user);
 });
 
-/* ── Logout ── */
+// ── STEP 6: Logout ──
 async function handleLogout() {
-  try {
-    await signOut(auth);
-    showToast('Logged out successfully', 'success');
-    setTimeout(function(){ window.location.href = 'index.html'; }, 800);
-  } catch(err) {
-    showToast('Logout failed: ' + err.message, 'error');
-  }
+  try { await signOut(auth); window.location.href = 'index.html'; }
+  catch(err) { showToast('Logout failed', 'error'); }
 }
 document.getElementById('logoutBtn').addEventListener('click', handleLogout);
 document.getElementById('mobLogout').addEventListener('click', handleLogout);
 
-/* ── User dropdown ── */
+// ── STEP 7: User Dropdown ──
 var menuBtn = document.getElementById('userMenuBtn');
 var dropdown = document.getElementById('userDropdown');
-menuBtn.addEventListener('click', function(e){
-  e.stopPropagation();
-  dropdown.classList.toggle('open');
-});
+menuBtn.addEventListener('click', function(e){ e.stopPropagation(); dropdown.classList.toggle('open'); });
 document.addEventListener('click', function(){ dropdown.classList.remove('open'); });
 
-/* ── Edit profile ── */
+// ── STEP 8: Edit Profile ──
 var editBtn = document.getElementById('editProfileBtn');
 var cancelBtn = document.getElementById('cancelEditBtn');
 var profileView = document.getElementById('profileView');
@@ -594,52 +555,37 @@ profileEdit.addEventListener('submit', async function(e){
   e.preventDefault();
   var name = document.getElementById('editName').value.trim();
   var phone = document.getElementById('editPhone').value.trim();
-
-  if(!name || name.length < 2) {
-    showToast('Name must be at least 2 characters', 'error');
-    return;
-  }
-
+  if(!name || name.length < 2) { showToast('Name too short', 'error'); return; }
   try {
     var user = auth.currentUser;
     await updateProfile(user, { displayName: name });
-    await updateDoc(doc(db, 'users', user.uid), { name: name, phone: phone });
-
+    await updateDoc(doc2(db, 'users', user.uid), { name: name, phone: phone });
     document.getElementById('profileName').textContent = name;
     document.getElementById('profilePhone').textContent = phone;
     document.getElementById('headerName').textContent = name.split(' ')[0];
     document.getElementById('welcomeName').textContent = 'Welcome back, ' + name.split(' ')[0] + '!';
-
     profileView.style.display = 'block';
     profileEdit.style.display = 'none';
     editBtn.style.display = 'inline-flex';
-
     showToast('Profile updated!', 'success');
-  } catch(err) {
-    showToast('Update failed: ' + err.message, 'error');
-  }
+  } catch(err) { showToast('Update failed: ' + err.message, 'error'); }
 });
 
-/* ── Copy referral ── */
+// ── STEP 9: Copy Referral ──
 document.getElementById('copyReferral').addEventListener('click', function(){
   var code = document.getElementById('referralCode').textContent;
   navigator.clipboard.writeText(code).then(function(){
     showToast('Referral code copied! 🎉', 'success');
-  }).catch(function(){
-    showToast('Copy failed — please copy manually', 'error');
-  });
+  }).catch(function(){ showToast('Copy failed', 'error'); });
 });
 
-/* ── Mobile menu ── */
+// ── STEP 10: Mobile Menu ──
 var ham = document.getElementById('hamburger');
 var mob = document.getElementById('mobileNav');
-ham.addEventListener('click', function(){
-  ham.classList.toggle('open');
-  mob.classList.toggle('open');
-});
+ham.addEventListener('click', function(){ ham.classList.toggle('open'); mob.classList.toggle('open'); });
 document.querySelectorAll('.mob-link').forEach(function(l){
   l.addEventListener('click', function(){ ham.classList.remove('open'); mob.classList.remove('open'); });
 });
-</script>
 
+</script>
 </html>
