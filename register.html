@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create your free Frame Flicker Studios account — Earn FFS Coins, manage bookings, and unlock rewards.">
+  <link rel="icon" type="image/jpeg" href="https://ffstudios.rf.gd/wp-content/uploads/2025/07/WhatsApp-Image-2025-06-20-at-01.53.56_f021d77d.jpg">
+  <title>Sign Up | Frame Flicker Studios</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+<!-- ========== BACKGROUND ========== -->
+<div class="auth-bg">
+  <div class="auth-bg-image"></div>
+  <div class="auth-bg-overlay"></div>
+  <div class="auth-bg-grain"></div>
+</div>
+
+<!-- ========== MAIN ========== -->
+<main class="auth-page">
+
+  <!-- Left Panel — Branding -->
+  <div class="auth-left">
+    <div class="auth-left-content">
+      <a href="index.html" class="logo" style="margin-bottom:48px;">
+        <img src="https://ffstudios.rf.gd/wp-content/uploads/2025/07/WhatsApp-Image-2025-06-20-at-01.53.56_f021d77d.jpg" alt="FFS">
+        <div class="logo-text">Frame<span>Flicker</span></div>
+      </a>
+
+      <h1 class="t-display auth-title">Join The<br><em class="auth-accent">Studio.</em></h1>
+      <p class="auth-left-desc">Create your free account and start earning rewards from day one. Your first booking earns you bonus FFS Coins.</p>
+
+      <!-- Welcome bonus card -->
+      <div class="signup-bonus-card">
+        <div class="signup-bonus-icon">🪙</div>
+        <div class="signup-bonus-text">
+          <strong>100 FFS Coins Welcome Bonus</strong>
+          <span>Credited instantly when you sign up</span>
+        </div>
+      </div>
+
+      <div class="auth-features" style="margin-top:32px;">
+        <div class="auth-feature">
+          <div class="auth-feature-icon">📊</div>
+          <div>
+            <strong>Personal Dashboard</strong>
+            <span>Track bookings, photos & videos</span>
+          </div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">🏆</div>
+          <div>
+            <strong>Tier Rewards</strong>
+            <span>Bronze → Silver → Gold → Platinum</span>
+          </div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">🎁</div>
+          <div>
+            <strong>Gift Cards</strong>
+            <span>Buy & send to friends and family</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Panel — Form -->
+  <div class="auth-right">
+    <div class="auth-form-wrap page-enter">
+
+      <!-- Mobile logo -->
+      <a href="index.html" class="logo auth-mobile-logo">
+        <img src="https://ffstudios.rf.gd/wp-content/uploads/2025/07/WhatsApp-Image-2025-06-20-at-01.53.56_f021d77d.jpg" alt="FFS">
+        <div class="logo-text">Frame<span>Flicker</span></div>
+      </a>
+
+      <div class="auth-form-header">
+        <h2 class="t-h3">Create Account</h2>
+        <p class="t-small">Sign up free and get <strong class="t-gold">100 FFS Coins</strong> instantly</p>
+      </div>
+
+      <!-- Google Sign Up -->
+      <button class="btn-google" id="googleSignup">
+        <svg width="18" height="18" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        Sign up with Google
+      </button>
+
+      <div class="auth-divider"><span>or</span></div>
+
+      <!-- Registration Form -->
+      <form id="registerForm" class="auth-form" autocomplete="on">
+
+        <!-- Full Name -->
+        <div class="input-group">
+          <label class="input-label" for="regName">Full Name</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">👤</span>
+            <input type="text" id="regName" class="input" placeholder="Your full name" required autocomplete="name">
+          </div>
+          <div class="input-error-msg" id="nameError"></div>
+        </div>
+
+        <!-- Email -->
+        <div class="input-group">
+          <label class="input-label" for="regEmail">Email Address</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">✉</span>
+            <input type="email" id="regEmail" class="input" placeholder="you@example.com" required autocomplete="email">
+          </div>
+          <div class="input-error-msg" id="emailError"></div>
+        </div>
+
+        <!-- Phone (optional) -->
+        <div class="input-group">
+          <label class="input-label" for="regPhone">Phone Number <span class="t-muted" style="font-weight:400;letter-spacing:0;text-transform:none;font-size:.72rem;">(optional)</span></label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">📱</span>
+            <input type="tel" id="regPhone" class="input" placeholder="+94 7X XXX XXXX" autocomplete="tel">
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="input-group">
+          <label class="input-label" for="regPassword">Password</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="regPassword" class="input" placeholder="Min 8 characters" required autocomplete="new-password">
+            <button type="button" class="pwd-toggle" id="pwdToggle1" aria-label="Toggle password">👁</button>
+          </div>
+          <div class="input-error-msg" id="passwordError"></div>
+          <!-- Strength meter -->
+          <div class="pwd-strength" id="pwdStrength">
+            <div class="pwd-strength-bar">
+              <div class="pwd-strength-fill" id="pwdFill"></div>
+            </div>
+            <span class="pwd-strength-text" id="pwdText"></span>
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="input-group">
+          <label class="input-label" for="regConfirm">Confirm Password</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="regConfirm" class="input" placeholder="Re-enter your password" required autocomplete="new-password">
+            <button type="button" class="pwd-toggle" id="pwdToggle2" aria-label="Toggle password">👁</button>
+          </div>
+          <div class="input-error-msg" id="confirmError"></div>
+        </div>
+
+        <!-- Terms -->
+        <label class="auth-check" style="margin-top:4px;">
+          <input type="checkbox" id="agreeTerms" required>
+          <span class="checkmark"></span>
+          <span class="t-small">I agree to the <a href="#" class="auth-link">Terms of Service</a> and <a href="#" class="auth-link">Privacy Policy</a></span>
+        </label>
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="registerBtn">
+          <span class="btn-text">Create Account</span>
+          <span class="spinner" id="regSpinner" style="display:none;"></span>
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <p>Already have an account? <a href="login.html" class="auth-link">Log in</a></p>
+      </div>
+
+      <a href="index.html" class="auth-back">← Back to Home</a>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- ========== SUCCESS MODAL ========== -->
+<div class="auth-modal" id="successModal">
+  <div class="auth-modal-box success-modal-box">
+    <div class="success-confetti" id="confetti"></div>
+    <div class="success-coin-wrap">
+      <div class="success-coin">
+        <span>FFS</span>
+      </div>
+    </div>
+    <h3 class="t-h3" style="margin-top:20px;">Welcome to the Studio! 🎉</h3>
+    <p class="t-body" style="margin:12px 0 8px;">Your account has been created successfully.</p>
+    <div class="success-bonus">
+      <div class="success-bonus-amount">+100</div>
+      <div>
+        <strong class="t-gold">FFS Coins Credited</strong>
+        <span class="t-tiny" style="display:block;margin-top:2px;">Welcome Bonus</span>
+      </div>
+    </div>
+    <p class="t-small" style="margin:20px 0;">Redirecting to your dashboard...</p>
+    <div class="progress-track progress-gold" style="max-width:200px;margin:0 auto;">
+      <div class="progress-fill" id="redirectProgress" style="width:0%;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== TOAST CONTAINER ========== -->
+<div class="toast-container" id="toasts"></div>
+
+<!-- ========== REGISTER-SPECIFIC CSS ========== -->
+<style>
+/* ── Welcome Bonus Card ── */
+.signup-bonus-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  background: var(--gold-subtle);
+  border: 1px solid rgba(245,166,35,0.25);
+  border-radius: var(--radius-md);
+  margin-bottom: 8px;
+}
+
+.signup-bonus-icon {
+  font-size: 2rem;
+  width: 52px;
+  height: 52px;
+  background: var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px var(--gold-glow);
+}
+
+.signup-bonus-text strong {
+  font-size: 0.95rem;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.signup-bonus-text span {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+/* ── Password Strength ── */
+.pwd-strength {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.pwd-strength-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.pwd-strength-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s, background 0.3s;
+  width: 0%;
+}
+
+.pwd-strength-text {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  min-width: 50px;
+}
+
+.pwd-weak .pwd-strength-fill   { width: 25%; background: #ff4444; }
+.pwd-fair .pwd-strength-fill   { width: 50%; background: #ffaa00; }
+.pwd-good .pwd-strength-fill   { width: 75%; background: #44bb44; }
+.pwd-strong .pwd-strength-fill { width: 100%; background: var(--green); }
+
+.pwd-weak .pwd-strength-text   { color: #ff4444; }
+.pwd-fair .pwd-strength-text   { color: #ffaa00; }
+.pwd-good .pwd-strength-text   { color: #44bb44; }
+.pwd-strong .pwd-strength-text { color: var(--green); }
+
+/* ── Success Modal ── */
+.success-modal-box {
+  text-align: center;
+  padding: 48px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.success-coin-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.success-coin {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--black);
+  box-shadow: 0 8px 32px var(--gold-glow);
+  animation: coinBounce 1s var(--ease) forwards, coinSpin 4s linear 1s infinite;
+}
+
+@keyframes coinBounce {
+  0%   { transform: scale(0) rotate(0deg); opacity: 0; }
+  60%  { transform: scale(1.2) rotate(180deg); opacity: 1; }
+  100% { transform: scale(1) rotate(360deg); opacity: 1; }
+}
+
+@keyframes coinSpin {
+  0%   { transform: perspective(400px) rotateY(0deg); }
+  100% { transform: perspective(400px) rotateY(360deg); }
+}
+
+.success-bonus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px 24px;
+  background: var(--gold-subtle);
+  border: 1px solid rgba(245,166,35,0.2);
+  border-radius: var(--radius-md);
+  margin: 20px auto;
+  max-width: 280px;
+}
+
+.success-bonus-amount {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--gold);
+}
+
+.success-bonus strong {
+  font-size: 0.88rem;
+  display: block;
+}
+
+/* ── Confetti ── */
+.success-confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  top: -10px;
+  animation: confettiFall 3s ease-in forwards;
+}
+
+@keyframes confettiFall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
+}
+</style>
+
+</body>
+
+<!-- ========== SCRIPTS ========== -->
+<script type="module">
+import { auth, db } from './js/firebase.js';
+import { createUserWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { doc, setDoc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+/* ── Toast ── */
+function showToast(msg, type) {
+  var c = document.getElementById('toasts');
+  var t = document.createElement('div');
+  t.className = 'toast toast-' + type;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(function(){ t.classList.add('show'); }, 50);
+  setTimeout(function(){ t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 400); }, 3500);
+}
+
+/* ── Confetti generator ── */
+function launchConfetti() {
+  var container = document.getElementById('confetti');
+  var colors = ['#E50914', '#f5a623', '#ffffff', '#00c853', '#2979ff'];
+  for (var i = 0; i < 40; i++) {
+    var piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDelay = Math.random() * 1.5 + 's';
+    piece.style.animationDuration = (2 + Math.random() * 2) + 's';
+    piece.style.width = (4 + Math.random() * 8) + 'px';
+    piece.style.height = (4 + Math.random() * 8) + 'px';
+    container.appendChild(piece);
+  }
+}
+
+/* ── Password toggles ── */
+function setupPwdToggle(inputId, toggleId) {
+  var inp = document.getElementById(inputId);
+  var btn = document.getElementById(toggleId);
+  btn.addEventListener('click', function(){
+    if(inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+    else { inp.type = 'password'; btn.textContent = '👁'; }
+  });
+}
+setupPwdToggle('regPassword', 'pwdToggle1');
+setupPwdToggle('regConfirm', 'pwdToggle2');
+
+/* ── Password strength checker ── */
+var pwdInput = document.getElementById('regPassword');
+var pwdStrength = document.getElementById('pwdStrength');
+var pwdText = document.getElementById('pwdText');
+
+pwdInput.addEventListener('input', function(){
+  var val = pwdInput.value;
+  var score = 0;
+
+  if(val.length >= 8) score++;
+  if(val.length >= 12) score++;
+  if(/[A-Z]/.test(val)) score++;
+  if(/[0-9]/.test(val)) score++;
+  if(/[^A-Za-z0-9]/.test(val)) score++;
+
+  pwdStrength.className = 'pwd-strength';
+
+  if(val.length === 0) {
+    pwdText.textContent = '';
+    return;
+  }
+
+  if(score <= 1) {
+    pwdStrength.classList.add('pwd-weak');
+    pwdText.textContent = 'Weak';
+  } else if(score <= 2) {
+    pwdStrength.classList.add('pwd-fair');
+    pwdText.textContent = 'Fair';
+  } else if(score <= 3) {
+    pwdStrength.classList.add('pwd-good');
+    pwdText.textContent = 'Good';
+  } else {
+    pwdStrength.classList.add('pwd-strong');
+    pwdText.textContent = 'Strong';
+  }
+});
+
+/* ── Clear errors on input ── */
+document.querySelectorAll('.input').forEach(function(inp){
+  inp.addEventListener('input', function(){
+    inp.classList.remove('input-error');
+    var errEl = inp.closest('.input-group').querySelector('.input-error-msg');
+    if(errEl) errEl.textContent = '';
+  });
+});
+
+/* ── Create Firestore user profile ── */
+async function createUserProfile(uid, data) {
+  await setDoc(doc(db, 'users', uid), {
+    name: data.name,
+    email: data.email,
+    phone: data.phone || '',
+    photoURL: data.photoURL || '',
+    coins: 100,
+    tier: 'Bronze',
+    totalEarned: 100,
+    totalRedeemed: 0,
+    bookings: [],
+    giftCards: [],
+    joined: serverTimestamp()
+  });
+
+  // Log welcome bonus transaction
+  var transId = 'welcome_' + uid + '_' + Date.now();
+  await setDoc(doc(db, 'transactions', transId), {
+    userId: uid,
+    type: 'earned',
+    amount: 100,
+    reason: 'Welcome Bonus — Account Created',
+    date: serverTimestamp()
+  });
+}
+
+/* ── Show success modal ── */
+function showSuccess() {
+  var modal = document.getElementById('successModal');
+  modal.classList.add('open');
+  launchConfetti();
+
+  // Animate progress bar
+  var fill = document.getElementById('redirectProgress');
+  setTimeout(function(){ fill.style.width = '100%'; }, 100);
+
+  // Redirect after 3.5 seconds
+  setTimeout(function(){
+    window.location.href = 'dashboard.html';
+  }, 3500);
+}
+
+/* ── Email/Password Registration ── */
+document.getElementById('registerForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+
+  var name = document.getElementById('regName').value.trim();
+  var email = document.getElementById('regEmail').value.trim();
+  var phone = document.getElementById('regPhone').value.trim();
+  var password = document.getElementById('regPassword').value;
+  var confirm = document.getElementById('regConfirm').value;
+  var agreed = document.getElementById('agreeTerms').checked;
+
+  var btn = document.getElementById('registerBtn');
+  var spinner = document.getElementById('regSpinner');
+  var btnText = btn.querySelector('.btn-text');
+
+  // Error elements
+  var nameErr = document.getElementById('nameError');
+  var emailErr = document.getElementById('emailError');
+  var pwdErr = document.getElementById('passwordError');
+  var confErr = document.getElementById('confirmError');
+
+  // Reset errors
+  [nameErr, emailErr, pwdErr, confErr].forEach(function(el){ el.textContent = ''; });
+  document.querySelectorAll('.input').forEach(function(i){ i.classList.remove('input-error'); });
+
+  // Validate
+  var valid = true;
+
+  if(!name || name.length < 2) {
+    nameErr.textContent = 'Please enter your full name';
+    document.getElementById('regName').classList.add('input-error');
+    valid = false;
+  }
+
+  if(!email) {
+    emailErr.textContent = 'Email is required';
+    document.getElementById('regEmail').classList.add('input-error');
+    valid = false;
+  } else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    emailErr.textContent = 'Please enter a valid email';
+    document.getElementById('regEmail').classList.add('input-error');
+    valid = false;
+  }
+
+  if(!password) {
+    pwdErr.textContent = 'Password is required';
+    document.getElementById('regPassword').classList.add('input-error');
+    valid = false;
+  } else if(password.length < 8) {
+    pwdErr.textContent = 'Password must be at least 8 characters';
+    document.getElementById('regPassword').classList.add('input-error');
+    valid = false;
+  }
+
+  if(password !== confirm) {
+    confErr.textContent = 'Passwords do not match';
+    document.getElementById('regConfirm').classList.add('input-error');
+    valid = false;
+  }
+
+  if(!agreed) {
+    showToast('Please agree to the Terms of Service', 'error');
+    valid = false;
+  }
+
+  if(!valid) return;
+
+  // Show loading
+  btnText.style.display = 'none';
+  spinner.style.display = 'inline-block';
+  btn.disabled = true;
+
+  try {
+    // Create auth user
+    var cred = await createUserWithEmailAndPassword(auth, email, password);
+
+    // Update display name
+    await updateProfile(cred.user, { displayName: name });
+
+    // Create Firestore profile
+    await createUserProfile(cred.user.uid, {
+      name: name,
+      email: email,
+      phone: phone,
+      photoURL: ''
+    });
+
+    // Show success
+    showSuccess();
+
+  } catch(err) {
+    spinner.style.display = 'none';
+    btnText.style.display = 'inline';
+    btn.disabled = false;
+
+    if(err.code === 'auth/email-already-in-use') {
+      emailErr.textContent = 'An account with this email already exists';
+      document.getElementById('regEmail').classList.add('input-error');
+    } else if(err.code === 'auth/weak-password') {
+      pwdErr.textContent = 'Password is too weak — try adding numbers and symbols';
+      document.getElementById('regPassword').classList.add('input-error');
+    } else if(err.code === 'auth/invalid-email') {
+      emailErr.textContent = 'Invalid email format';
+      document.getElementById('regEmail').classList.add('input-error');
+    } else {
+      showToast('Registration failed: ' + err.message, 'error');
+    }
+  }
+});
+
+/* ── Google Sign Up ── */
+document.getElementById('googleSignup').addEventListener('click', async function(){
+  var provider = new GoogleAuthProvider();
+  try {
+    var result = await signInWithPopup(auth, provider);
+    var user = result.user;
+
+    // Check if profile exists
+    var userRef = doc(db, 'users', user.uid);
+    var userSnap = await getDoc(userRef);
+
+    if(!userSnap.exists()) {
+      await createUserProfile(user.uid, {
+        name: user.displayName || 'User',
+        email: user.email,
+        phone: '',
+        photoURL: user.photoURL || ''
+      });
+      showSuccess();
+    } else {
+      showToast('Account already exists — logging you in!', 'info');
+      setTimeout(function(){ window.location.href = 'dashboard.html'; }, 1200);
+    }
+
+  } catch(err) {
+    if(err.code !== 'auth/popup-closed-by-user') {
+      showToast('Google sign-up failed: ' + err.message, 'error');
+    }
+  }
+});
+
+/* ── If already logged in, redirect ── */
+onAuthStateChanged(auth, function(user){
+  if(user) {
+    // Check if user has a profile (not mid-registration)
+    getDoc(doc(db, 'users', user.uid)).then(function(snap){
+      if(snap.exists()) window.location.href = 'dashboard.html';
+    });
+  }
+});
+</script>
+
+</html>
