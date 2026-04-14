@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Your Frame Flicker Studios Dashboard — Manage bookings, FFS Coins, and rewards.">
+  <link rel="icon" type="image/jpeg" href="https://ffstudios.rf.gd/wp-content/uploads/2025/07/WhatsApp-Image-2025-06-20-at-01.53.56_f021d77d.jpg">
+  <title>Dashboard | Frame Flicker Studios</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+<!-- ========== LOADING STATE ========== -->
+<div class="dash-loading" id="dashLoading">
+  <div class="spinner spinner-lg"></div>
+  <p class="t-small" style="margin-top:16px;">Loading your dashboard...</p>
+</div>
+
+<!-- ========== HEADER ========== -->
+<header class="header scrolled" id="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <img src="https://ffstudios.rf.gd/wp-content/uploads/2025/07/WhatsApp-Image-2025-06-20-at-01.53.56_f021d77d.jpg" alt="FFS">
+      <div class="logo-text">Frame<span>Flicker</span></div>
+    </a>
+
+    <nav class="nav" id="nav">
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="coins.html">FFS Coins</a>
+      <a href="giftcard.html">Gift Cards</a>
+      <a href="index.html#packages">Packages</a>
+      <a href="index.html#gallery">Gallery</a>
+    </nav>
+
+    <div class="flex items-center gap-12">
+      <!-- Coin display in header -->
+      <a href="coins.html" class="coin-display" id="headerCoins">
+        <div class="coin-icon">F</div>
+        <span class="coin-amount" id="headerCoinCount">0</span>
+      </a>
+
+      <!-- User menu -->
+      <div class="user-menu-wrap" id="userMenuWrap">
+        <button class="user-menu-trigger" id="userMenuBtn">
+          <img src="" alt="" class="avatar avatar-sm avatar-red" id="headerAvatar">
+          <span class="user-menu-name" id="headerName">User</span>
+          <span class="user-menu-arrow">▾</span>
+        </button>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="dashboard.html" class="dropdown-item">📊 Dashboard</a>
+          <a href="coins.html" class="dropdown-item">🪙 FFS Coins</a>
+          <a href="giftcard.html" class="dropdown-item">🎁 Gift Cards</a>
+          <div class="dropdown-sep"></div>
+          <button class="dropdown-item dropdown-logout" id="logoutBtn">🚪 Log Out</button>
+        </div>
+      </div>
+
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ========== MOBILE NAV ========== -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="dashboard.html" class="mob-link">Dashboard</a>
+  <a href="coins.html" class="mob-link">FFS Coins</a>
+  <a href="giftcard.html" class="mob-link">Gift Cards</a>
+  <a href="index.html#packages" class="mob-link">Packages</a>
+  <a href="index.html#gallery" class="mob-link">Gallery</a>
+  <button class="btn btn-secondary" id="mobLogout" style="margin-top:24px;">Log Out</button>
+</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="dash-main" id="dashMain" style="display:none;">
+
+  <!-- Welcome Banner -->
+  <section class="dash-welcome">
+    <div class="container">
+      <div class="welcome-card page-enter">
+        <div class="welcome-left">
+          <div class="welcome-greeting">
+            <span class="t-tiny" id="greetTime">Good Morning</span>
+            <h1 class="t-h2" id="welcomeName">Welcome back!</h1>
+          </div>
+          <p class="t-body" id="welcomeMsg">Here's an overview of your account and rewards.</p>
+          <div class="flex gap-12 flex-wrap" style="margin-top:20px;">
+            <a href="coins.html" class="btn btn-gold btn-sm">🪙 View Coins</a>
+            <a href="giftcard.html" class="btn btn-secondary btn-sm">🎁 Gift Cards</a>
+          </div>
+        </div>
+        <div class="welcome-right">
+          <div class="welcome-coin-display">
+            <div class="welcome-coin-circle">
+              <div class="welcome-coin-inner">
+                <span class="t-tiny t-gold">FFS Coins</span>
+                <span class="welcome-coin-num" id="welcomeCoins">0</span>
+              </div>
+              <svg class="welcome-coin-ring" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="54" fill="none" stroke="var(--border)" stroke-width="4"/>
+                <circle cx="60" cy="60" r="54" fill="none" stroke="var(--gold)" stroke-width="4"
+                        stroke-dasharray="339.292" stroke-dashoffset="339.292"
+                        stroke-linecap="round" id="coinRing"
+                        style="transform:rotate(-90deg);transform-origin:center;transition:stroke-dashoffset 1.5s ease;"/>
+              </svg>
+            </div>
+            <div class="welcome-tier" id="welcomeTier">
+              <span class="tier-badge tier-badge-bronze" id="welcomeTierBadge">🥉 Bronze</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Cards -->
+  <section class="dash-stats">
+    <div class="container">
+      <div class="grid grid-4 gap-20">
+        <div class="card dash-stat-card page-enter">
+          <div class="dash-stat-icon" style="background:var(--gold-subtle);">🪙</div>
+          <div>
+            <div class="t-tiny">Total Earned</div>
+            <div class="stat-value" id="totalEarned">0</div>
+          </div>
+        </div>
+        <div class="card dash-stat-card page-enter" style="animation-delay:.1s;">
+          <div class="dash-stat-icon" style="background:var(--red-subtle);">💳</div>
+          <div>
+            <div class="t-tiny">Total Redeemed</div>
+            <div class="stat-value" id="totalRedeemed">0</div>
+          </div>
+        </div>
+        <div class="card dash-stat-card page-enter" style="animation-delay:.2s;">
+          <div class="dash-stat-icon" style="background:var(--green-subtle);">📷</div>
+          <div>
+            <div class="t-tiny">Bookings</div>
+            <div class="stat-value" id="totalBookings">0</div>
+          </div>
+        </div>
+        <div class="card dash-stat-card page-enter" style="animation-delay:.3s;">
+          <div class="dash-stat-icon" style="background:var(--blue-subtle);">🎁</div>
+          <div>
+            <div class="t-tiny">Gift Cards</div>
+            <div class="stat-value" id="totalGiftCards">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Two Column Layout -->
+  <section class="dash-content">
+    <div class="container">
+      <div class="dash-grid">
+
+        <!-- Left Column -->
+        <div class="dash-col-main">
+
+          <!-- Profile Card -->
+          <div class="card card-glow dash-profile-card">
+            <div class="dash-card-header">
+              <h3 class="t-h4">Profile</h3>
+              <button class="btn btn-ghost btn-sm" id="editProfileBtn">✏️ Edit</button>
+            </div>
+
+            <div class="profile-info" id="profileView">
+              <div class="profile-top">
+                <div class="profile-avatar-wrap">
+                  <img src="" alt="" class="avatar avatar-xl avatar-red" id="profileAvatar">
+                  <div class="profile-tier-dot" id="profileTierDot"></div>
+                </div>
+                <div class="profile-details">
+                  <h3 class="t-h3" id="profileName">Loading...</h3>
+                  <p class="t-small" id="profileEmail">loading@email.com</p>
+                  <p class="t-small" id="profilePhone"></p>
+                  <div class="flex gap-8 flex-wrap" style="margin-top:10px;">
+                    <span class="tier-badge" id="profileTierBadge">🥉 Bronze</span>
+                    <span class="badge badge-outline" id="profileJoined">Joined —</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Edit Form (hidden by default) -->
+            <form class="profile-edit" id="profileEdit" style="display:none;">
+              <div class="input-group">
+                <label class="input-label" for="editName">Full Name</label>
+                <input type="text" id="editName" class="input" required>
+              </div>
+              <div class="input-group">
+                <label class="input-label" for="editPhone">Phone Number</label>
+                <input type="tel" id="editPhone" class="input" placeholder="+94 7X XXX XXXX">
+              </div>
+              <div class="flex gap-12" style="margin-top:8px;">
+                <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+                <button type="button" class="btn btn-ghost btn-sm" id="cancelEditBtn">Cancel</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="card">
+            <div class="dash-card-header">
+              <h3 class="t-h4">Recent Activity</h3>
+              <a href="coins.html" class="btn btn-ghost btn-sm">View All →</a>
+            </div>
+            <div class="activity-list" id="activityList">
+              <div class="activity-empty">
+                <span style="font-size:2rem;">📋</span>
+                <p class="t-small">No activity yet. Book a session to start earning coins!</p>
+                <a href="index.html#packages" class="btn btn-primary btn-sm" style="margin-top:12px;">Browse Packages</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column / Sidebar -->
+        <div class="dash-col-side">
+
+          <!-- Tier Progress -->
+          <div class="card card-gold">
+            <h3 class="t-h4" style="margin-bottom:20px;">🏆 Tier Progress</h3>
+            <div class="tier-progress-wrap" id="tierProgressWrap">
+              <div class="tier-current">
+                <span class="tier-badge" id="sidebarTierBadge">🥉 Bronze</span>
+                <span class="t-tiny" id="tierCoinsLabel">0 / 500 Coins</span>
+              </div>
+              <div class="progress-track progress-gold" style="margin:16px 0;">
+                <div class="progress-fill" id="tierProgressFill" style="width:0%;"></div>
+              </div>
+              <div class="tier-next">
+                <span class="t-small" id="tierNextLabel">250 more coins to <strong class="t-gold">Silver 🥈</strong></span>
+              </div>
+            </div>
+            <div class="tier-list">
+              <div class="tier-list-item" id="tierBronze"><span class="tier-dot" style="background:#cd7f32;"></span> Bronze <span class="t-muted">0–499</span></div>
+              <div class="tier-list-item" id="tierSilver"><span class="tier-dot" style="background:#c0c0c0;"></span> Silver <span class="t-muted">500–1,499</span></div>
+              <div class="tier-list-item" id="tierGold"><span class="tier-dot" style="background:var(--gold);"></span> Gold <span class="t-muted">1,500–4,999</span></div>
+              <div class="tier-list-item" id="tierPlatinum"><span class="tier-dot" style="background:#e5e4e2;"></span> Platinum <span class="t-muted">5,000+</span></div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="card">
+            <h3 class="t-h4" style="margin-bottom:20px;">⚡ Quick Actions</h3>
+            <div class="quick-actions">
+              <a href="index.html#packages" class="quick-action">
+                <span class="quick-action-icon">📷</span>
+                <span>Book a Session</span>
+              </a>
+              <a href="coins.html" class="quick-action">
+                <span class="quick-action-icon">🪙</span>
+                <span>Redeem Coins</span>
+              </a>
+              <a href="giftcard.html" class="quick-action">
+                <span class="quick-action-icon">🎁</span>
+                <span>Buy Gift Card</span>
+              </a>
+              <a href="index.html#contact" class="quick-action">
+                <span class="quick-action-icon">💬</span>
+                <span>Contact Us</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Referral Card -->
+          <div class="card card-glow">
+            <h3 class="t-h4" style="margin-bottom:12px;">🔗 Refer a Friend</h3>
+            <p class="t-small" style="margin-bottom:16px;">Share your referral code and earn <strong class="t-gold">200 FFS Coins</strong> for every friend who signs up and books.</p>
+            <div class="referral-code-wrap">
+              <div class="referral-code" id="referralCode">FFS-XXXXXX</div>
+              <button class="btn btn-primary btn-sm" id="copyReferral">Copy</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <p>&copy; 2025–2026 Frame Flicker Studios. All rights reserved.</p>
+      <p>Designed & Developed by Aken Sanketh</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ========== TOAST CONTAINER ========== -->
+<div class="toast-container" id="toasts"></div>
+
+</body>
+
+<!-- ========== DASHBOARD CSS ========== -->
+<link rel="stylesheet" href="css/dashboard.css">
+
+<!-- ========== SCRIPTS ========== -->
+<script type="module">
+import { auth, db } from './js/firebase.js';
+import { onAuthStateChanged, signOut, updateProfile } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { doc, getDoc, updateDoc, collection, query, where, orderBy, limit, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+/* ── Toast ── */
+function showToast(msg, type) {
+  var c = document.getElementById('toasts');
+  var t = document.createElement('div');
+  t.className = 'toast toast-' + type;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(function(){ t.classList.add('show'); }, 50);
+  setTimeout(function(){ t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 400); }, 3500);
+}
+
+/* ── Tier Logic ── */
+function getTier(coins) {
+  if(coins >= 5000) return { name:'Platinum', icon:'💎', class:'tier-badge-platinum', next:null, nextName:null, progress:100, max:5000 };
+  if(coins >= 1500) return { name:'Gold', icon:'🥇', class:'tier-badge-gold', next:5000, nextName:'Platinum 💎', progress:((coins-1500)/(5000-1500))*100, max:5000 };
+  if(coins >= 500)  return { name:'Silver', icon:'🥈', class:'tier-badge-silver', next:1500, nextName:'Gold 🥇', progress:((coins-500)/(1500-500))*100, max:1500 };
+  return { name:'Bronze', icon:'🥉', class:'tier-badge-bronze', next:500, nextName:'Silver 🥈', progress:(coins/500)*100, max:500 };
+}
+
+/* ── Greeting based on time ── */
+function getGreeting() {
+  var h = new Date().getHours();
+  if(h < 12) return 'Good Morning';
+  if(h < 17) return 'Good Afternoon';
+  return 'Good Evening';
+}
+
+/* ── Format date ── */
+function formatDate(ts) {
+  if(!ts) return '—';
+  var d = ts.toDate ? ts.toDate() : new Date(ts);
+  return d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+}
+
+/* ── Generate referral code ── */
+function genReferral(uid) {
+  return 'FFS-' + uid.substring(0,6).toUpperCase();
+}
+
+/* ── Default avatar ── */
+function getAvatar(user, data) {
+  if(data && data.photoURL) return data.photoURL;
+  if(user.photoURL) return user.photoURL;
+  return 'https://ui-avatars.com/api/?name=' + encodeURIComponent(data ? data.name : 'User') + '&background=E50914&color=fff&size=128';
+}
+
+/* ── Populate Dashboard ── */
+async function loadDashboard(user) {
+  var userRef = doc(db, 'users', user.uid);
+  var snap = await getDoc(userRef);
+
+  if(!snap.exists()) {
+    showToast('Profile not found. Please register again.', 'error');
+    await signOut(auth);
+    window.location.href = 'register.html';
+    return;
+  }
+
+  var data = snap.data();
+  var tier = getTier(data.coins || 0);
+  var avatar = getAvatar(user, data);
+
+  // Hide loading, show dashboard
+  document.getElementById('dashLoading').style.display = 'none';
+  document.getElementById('dashMain').style.display = 'block';
+
+  // Header
+  document.getElementById('headerName').textContent = (data.name || 'User').split(' ')[0];
+  document.getElementById('headerAvatar').src = avatar;
+  document.getElementById('headerCoinCount').textContent = (data.coins || 0).toLocaleString();
+
+  // Welcome
+  document.getElementById('greetTime').textContent = getGreeting();
+  document.getElementById('welcomeName').textContent = 'Welcome back, ' + (data.name || 'User').split(' ')[0] + '!';
+  document.getElementById('welcomeCoins').textContent = (data.coins || 0).toLocaleString();
+
+  // Coin ring animation
+  var totalDash = 339.292;
+  var coinPercent = Math.min((data.coins || 0) / (tier.max || 500), 1);
+  setTimeout(function(){
+    document.getElementById('coinRing').style.strokeDashoffset = totalDash - (totalDash * coinPercent);
+  }, 300);
+
+  // Tier badge in welcome
+  var tierBadge = document.getElementById('welcomeTierBadge');
+  tierBadge.textContent = tier.icon + ' ' + tier.name;
+  tierBadge.className = 'tier-badge ' + tier.class;
+
+  // Stats
+  document.getElementById('totalEarned').textContent = (data.totalEarned || 0).toLocaleString();
+  document.getElementById('totalRedeemed').textContent = (data.totalRedeemed || 0).toLocaleString();
+  document.getElementById('totalBookings').textContent = (data.bookings ? data.bookings.length : 0);
+  document.getElementById('totalGiftCards').textContent = (data.giftCards ? data.giftCards.length : 0);
+
+  // Profile
+  document.getElementById('profileAvatar').src = avatar;
+  document.getElementById('profileName').textContent = data.name || 'User';
+  document.getElementById('profileEmail').textContent = data.email || '';
+  document.getElementById('profilePhone').textContent = data.phone || '';
+
+  var pTierBadge = document.getElementById('profileTierBadge');
+  pTierBadge.textContent = tier.icon + ' ' + tier.name;
+  pTierBadge.className = 'tier-badge ' + tier.class;
+
+  document.getElementById('profileJoined').textContent = 'Joined ' + formatDate(data.joined);
+
+  // Profile tier dot color
+  var dotColors = { Bronze:'#cd7f32', Silver:'#c0c0c0', Gold:'#f5a623', Platinum:'#e5e4e2' };
+  document.getElementById('profileTierDot').style.background = dotColors[tier.name] || '#cd7f32';
+
+  // Edit form pre-fill
+  document.getElementById('editName').value = data.name || '';
+  document.getElementById('editPhone').value = data.phone || '';
+
+  // Sidebar tier progress
+  var sTierBadge = document.getElementById('sidebarTierBadge');
+  sTierBadge.textContent = tier.icon + ' ' + tier.name;
+  sTierBadge.className = 'tier-badge ' + tier.class;
+
+  document.getElementById('tierCoinsLabel').textContent = (data.coins || 0) + ' / ' + (tier.next || tier.max) + ' Coins';
+  document.getElementById('tierProgressFill').style.width = tier.progress + '%';
+
+  if(tier.next) {
+    document.getElementById('tierNextLabel').innerHTML = (tier.next - (data.coins || 0)) + ' more coins to <strong class="t-gold">' + tier.nextName + '</strong>';
+  } else {
+    document.getElementById('tierNextLabel').innerHTML = '<strong class="t-gold">🎉 Max tier reached!</strong>';
+  }
+
+  // Highlight current tier in list
+  var tierMap = { Bronze:'tierBronze', Silver:'tierSilver', Gold:'tierGold', Platinum:'tierPlatinum' };
+  var activeEl = document.getElementById(tierMap[tier.name]);
+  if(activeEl) activeEl.classList.add('tier-list-active');
+
+  // Referral code
+  document.getElementById('referralCode').textContent = genReferral(user.uid);
+
+  // Load recent transactions
+  try {
+    var txQuery = query(
+      collection(db, 'transactions'),
+      where('userId', '==', user.uid),
+      orderBy('date', 'desc'),
+      limit(5)
+    );
+    var txSnap = await getDocs(txQuery);
+    var actList = document.getElementById('activityList');
+
+    if(!txSnap.empty) {
+      actList.innerHTML = '';
+      txSnap.forEach(function(txDoc){
+        var tx = txDoc.data();
+        var isEarn = tx.type === 'earned';
+        var item = document.createElement('div');
+        item.className = 'activity-item';
+        item.innerHTML =
+          '<div class="activity-icon" style="background:' + (isEarn ? 'var(--gold-subtle)' : 'var(--red-subtle)') + ';">' + (isEarn ? '🪙' : '💳') + '</div>' +
+          '<div class="activity-info">' +
+            '<strong>' + (tx.reason || 'Transaction') + '</strong>' +
+            '<span class="t-tiny">' + formatDate(tx.date) + '</span>' +
+          '</div>' +
+          '<div class="activity-amount ' + (isEarn ? 't-gold' : 't-accent') + '">' + (isEarn ? '+' : '-') + tx.amount + '</div>';
+        actList.appendChild(item);
+      });
+    }
+  } catch(err) {
+    console.log('Transactions query error:', err);
+  }
+}
+
+/* ── Auth check ── */
+onAuthStateChanged(auth, function(user){
+  if(!user) {
+    window.location.href = 'login.html';
+    return;
+  }
+  loadDashboard(user);
+});
+
+/* ── Logout ── */
+async function handleLogout() {
+  try {
+    await signOut(auth);
+    showToast('Logged out successfully', 'success');
+    setTimeout(function(){ window.location.href = 'index.html'; }, 800);
+  } catch(err) {
+    showToast('Logout failed: ' + err.message, 'error');
+  }
+}
+document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+document.getElementById('mobLogout').addEventListener('click', handleLogout);
+
+/* ── User dropdown ── */
+var menuBtn = document.getElementById('userMenuBtn');
+var dropdown = document.getElementById('userDropdown');
+menuBtn.addEventListener('click', function(e){
+  e.stopPropagation();
+  dropdown.classList.toggle('open');
+});
+document.addEventListener('click', function(){ dropdown.classList.remove('open'); });
+
+/* ── Edit profile ── */
+var editBtn = document.getElementById('editProfileBtn');
+var cancelBtn = document.getElementById('cancelEditBtn');
+var profileView = document.getElementById('profileView');
+var profileEdit = document.getElementById('profileEdit');
+
+editBtn.addEventListener('click', function(){
+  profileView.style.display = 'none';
+  profileEdit.style.display = 'flex';
+  editBtn.style.display = 'none';
+});
+
+cancelBtn.addEventListener('click', function(){
+  profileView.style.display = 'block';
+  profileEdit.style.display = 'none';
+  editBtn.style.display = 'inline-flex';
+});
+
+profileEdit.addEventListener('submit', async function(e){
+  e.preventDefault();
+  var name = document.getElementById('editName').value.trim();
+  var phone = document.getElementById('editPhone').value.trim();
+
+  if(!name || name.length < 2) {
+    showToast('Name must be at least 2 characters', 'error');
+    return;
+  }
+
+  try {
+    var user = auth.currentUser;
+    await updateProfile(user, { displayName: name });
+    await updateDoc(doc(db, 'users', user.uid), { name: name, phone: phone });
+
+    // Update UI
+    document.getElementById('profileName').textContent = name;
+    document.getElementById('profilePhone').textContent = phone;
+    document.getElementById('headerName').textContent = name.split(' ')[0];
+    document.getElementById('welcomeName').textContent = 'Welcome back, ' + name.split(' ')[0] + '!';
+
+    profileView.style.display = 'block';
+    profileEdit.style.display = 'none';
+    editBtn.style.display = 'inline-flex';
+
+    showToast('Profile updated!', 'success');
+  } catch(err) {
+    showToast('Update failed: ' + err.message, 'error');
+  }
+});
+
+/* ── Copy referral code ── */
+document.getElementById('copyReferral').addEventListener('click', function(){
+  var code = document.getElementById('referralCode').textContent;
+  navigator.clipboard.writeText(code).then(function(){
+    showToast('Referral code copied! Share it with friends 🎉', 'success');
+  }).catch(function(){
+    showToast('Copy failed — please copy manually', 'error');
+  });
+});
+
+/* ── Mobile menu ── */
+var ham = document.getElementById('hamburger');
+var mob = document.getElementById('mobileNav');
+ham.addEventListener('click', function(){
+  ham.classList.toggle('open');
+  mob.classList.toggle('open');
+});
+document.querySelectorAll('.mob-link').forEach(function(l){
+  l.addEventListener('click', function(){ ham.classList.remove('open'); mob.classList.remove('open'); });
+});
+</script>
+
+</html>
